@@ -2,7 +2,7 @@ const BaseAction = require('../BaseAction')
 const { checkPassword } = require('../common/checkPassword')
 const { makeAccessToken } = require('./common/makeAccessToken')
 const { errorCodes, AppError } = require('../../lib')
-const UserDAO = require('../../dao/UserDao')
+const UserDAO = require('../../dao/UserDAO')
 const SessionDAO = require('../../dao/SessionDAO')
 
 const validateLoginInput = require('../validation/login')

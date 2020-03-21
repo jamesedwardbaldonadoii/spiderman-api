@@ -1,5 +1,5 @@
 const BaseAction = require('../BaseAction')
-const UserDAO = require('../../dao/UserDao')
+const UserDAO = require('../../dao/UserDAO')
 
 class GetCurrentUserAction extends BaseAction {
   static get accessTag() {
