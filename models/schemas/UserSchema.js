@@ -4,7 +4,11 @@ const BaseSchema = require('./BaseSchema')
 
 // Create Schema
 const UserSchema = new Schema({
-  name: {
+  firstname: {
+    type: String,
+    required: true
+  },
+  lastname: {
     type: String,
     required: true
   },
@@ -23,22 +27,26 @@ const UserSchema = new Schema({
       'Password should be longer'
     ]
   },
-  salt: {
+  role: {
     type: String,
-    required: true
-  },
-  date: {
-    type: Date,
-    default: Date.now
+    default: 'user',
+    enum: ['admin', 'superadmin', 'moderator', 'user']
   },
   provider: {
     type: String,
-    required: 'Provider is required'
+    default: 'local',
+    enum: ['local', 'facebook', 'google']
   },
-  providerId: String,
+  providerId: { 
+    type: String
+  },
   providerData: {},
   verify: {
     email: {
+      type: Boolean,
+      default: false
+    },
+    mobile: {
       type: Boolean,
       default: false
     }

@@ -1,3 +1,6 @@
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+
 module.exports = {
   createdAt: {
     type: Date,
@@ -7,7 +10,16 @@ module.exports = {
     type: Date,
     default: Date.now
   },
+  updatedBy: {
+    type: Schema.ObjectId,
+    ref: 'User'
+  },
   deletedAt: {
-    type: Date
+    type: Date,
+    default: null
+  },
+  deletedBy: {
+    type: Schema.ObjectId,
+    ref: 'User'
   }
 }

@@ -8,13 +8,13 @@ const { jwtSign } = require('../../common/jwt')
  */
 function makeAccessToken(user) {
   assert.object(user, { required: true })
-
   let config = {
     payload: {
       tokenType: 'TOKEN_TYPE_ACCESS',
-      username: user.name,
-      id: user.id,
-      userRole: user.role,
+      id: user._id,
+      firstname: user.lastname,
+      lastname: user.firstname,
+      role: `ROLE_${user.role.toUpperCase()}`,
       email: user.email,
       iss
     },

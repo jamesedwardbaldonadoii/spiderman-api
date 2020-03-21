@@ -24,13 +24,13 @@ class RefreshTokensAction extends BaseAction {
     const reqFingerprint = ctx.body.fingerprint
 
     const oldSession = await SessionDAO.getByRefreshToken(reqRefreshToken)
-    
+
     await SessionDAO.bulkRemoveByKey({ refreshToken: reqRefreshToken })
     await verifySession(SessionDAO.entity(oldSession), reqFingerprint)
     const user = await UserDAO.getByID(oldSession.user)
 
     const newSession = SessionDAO.entity({
-      user: user.id,
+      user: user._id,
       ip: ctx.ip,
       ua: ctx.headers['User-Agent'],
       fingerprint: reqFingerprint

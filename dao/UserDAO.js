@@ -9,20 +9,12 @@ class UserDAO {
     return 'users'
   }
 
-  /**
-   * ------------------------------
-   * @HOOKS
-   * ------------------------------
-   */
-  $formatJson(json) {
-    json = super.$formatJson(json)
+  static get excluded() {
+    return '-password -providerId -providerData'
+  }
 
-    // delete sensitive data from all queries
-    delete json.salt
-    delete json.password
-    delete json.email
-
-    return json
+  static get included() {
+    return 'firstname lastname email role verify'
   }
 
   /**
@@ -30,16 +22,48 @@ class UserDAO {
    * @METHODS4CRUD
    * ------------------------------
    */
-  static async getByID(objectId) {
-    try {
-      const data = await User.findById(objectId).exec()
+  static async create(data) {
+    assert.object(data, { required: true, notEmpty: true })
 
-      if (!data) {
+    try {
+      const user = await new User(data).save()
+
+      if (!user) {
+        // throw this.errorEmptyResponse()
+      }
+
+      return user
+    } catch (err) {
+      // console.log(err, 'TEST')
+      //do something here error occur
+    }
+  }
+
+  static async getByKey(object) {
+    try {
+      const user = await User.findOne(object).exec()
+
+      if (!user) {
         //do something here error occur
         // throw this.errorEmptyResponse()
       }
 
-      return data
+      return user
+    } catch (err) {
+      //do something here error occur
+    }
+  }
+
+  static async getByID(objectId) {
+    try {
+      const user = await User.findById(objectId).exec()
+
+      if (!user) {
+        //do something here error occur
+        // throw this.errorEmptyResponse()
+      }
+
+      return user
     } catch (err) {
       //do something here error occur
     }
@@ -47,16 +71,34 @@ class UserDAO {
 
   static async getByEmail(email) {
     try {
-      const data = await User.findOne({ email }).exec()
+      const user = await User.findOne({ email }).exec()
 
-      if (!data) {
+      if (!user) {
         //do something here error occur
         // throw this.errorEmptyResponse()
       }
 
-      return data
+      return user
     } catch (err) {
       //do something here error occur
+    }
+  }
+
+  /**
+   * ------------------------------
+   * @METHODS
+   * ------------------------------
+   */
+  static async getCurrentUser(userId) {
+    const user = await this.getByKey({ _id: userId })
+
+    return {
+      id: userId,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      role: user.role,
+      verify: user.verify
     }
   }
 }

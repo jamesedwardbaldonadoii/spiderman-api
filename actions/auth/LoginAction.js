@@ -34,6 +34,7 @@ class LoginAction extends BaseAction {
 
     try {
       user = await UserDAO.getByEmail(ctx.body.email)
+
       await checkPassword(ctx.body.password, user.password)
     } catch (e) {
       if (
@@ -47,7 +48,7 @@ class LoginAction extends BaseAction {
     }
 
     const newSession = SessionDAO.entity({
-      user: user.id,
+      user: user._id,
       ip: ctx.ip,
       ua: ctx.headers['User-Agent'],
       fingerprint: ctx.body.fingerprint

@@ -4,7 +4,7 @@ const { errorCodes, AppError, assert } = require('../../lib')
 /**
  * @return {Promise} true/Error
  */
-function jwtVerify (token, SECRET) {
+function jwtVerify(token, SECRET) {
   assert.string(token, { notEmpty: true })
   assert.string(SECRET, { notEmpty: true })
 
@@ -14,7 +14,9 @@ function jwtVerify (token, SECRET) {
         if (error.name === 'TokenExpiredError') {
           return reject(new AppError({ ...errorCodes.TOKEN_EXPIRED }))
         }
-        return reject(new AppError({ ...errorCodes.TOKEN_VERIFY, message: error.message }))
+        return reject(
+          new AppError({ ...errorCodes.TOKEN_VERIFY, message: error.message })
+        )
       }
       return resolve(decoded)
     })
@@ -24,14 +26,20 @@ function jwtVerify (token, SECRET) {
 /**
  * @return {Promise} string (token)
  */
-function jwtSign (playload, SECRET, options) {
+function jwtSign(playload, SECRET, options) {
   assert.object(playload, { required: true })
   assert.string(SECRET, { notEmpty: true })
   assert.object(options, { notEmpty: true })
 
   return new Promise((resolve, reject) => {
     jwt.sign(playload, SECRET, options, (error, token) => {
-      if (error) return reject(new AppError({ ...errorCodes.TOKEN_NOT_SIGNED, message: error.message }))
+      if (error)
+        return reject(
+          new AppError({
+            ...errorCodes.TOKEN_NOT_SIGNED,
+            message: error.message
+          })
+        )
       return resolve(token)
     })
   })

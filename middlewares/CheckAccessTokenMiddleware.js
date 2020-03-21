@@ -24,7 +24,8 @@ class CheckAccessTokenMiddleware extends BaseMiddleware {
       // set default meta data
       req.currentUser = Object.freeze({
         id: null,
-        name: null,
+        firstname: null,
+        lastname: null,
         role: roles.anonymous,
         email: null,
         expiresIn: null
@@ -36,8 +37,9 @@ class CheckAccessTokenMiddleware extends BaseMiddleware {
             // set actual current user
             req.currentUser = Object.freeze({
               id: tokenData.sub,
-              name: tokenData.username,
-              role: tokenData.userRole,
+              firstname: tokenData.firstname,
+              lastname: tokenData.lastname,
+              role: tokenData.role,
               email: tokenData.email,
               expiresIn: Number(tokenData.exp)
             })

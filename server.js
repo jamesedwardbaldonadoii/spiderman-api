@@ -15,21 +15,8 @@ app.use(
 
 app.use(bodyParser.json())
 
-// Passport middleware
-app.use(passport.initialize())
-
-const logRequestStart = (req, res, next) => {
-  console.info(`${req.method} ${req.originalUrl}`)
-  next()
-}
-
-app.use(logRequestStart)
-
 // Mongoose
 require('./models/index')()
-
-// Passport config
-require('./config/passport')(passport)
 
 /**
  * @middlewares initialization
@@ -44,7 +31,7 @@ try {
   }
 } catch (e) {
   console.log('Middleware Error', e)
-  // return reject(e)
+  return reject(e)
 }
 
 /**
@@ -60,7 +47,7 @@ try {
   }
 } catch (e) {
   console.log('Controller Error', e)
-  // reject(e)
+  reject(e)
 }
 
 const port = process.env.PORT || 5000
